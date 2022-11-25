@@ -104,7 +104,8 @@ export default {
         id: this.$route.params.id
       },
       tags: [],
-      topicUser: {}
+      topicUser: {},
+      testname:testvalue
     }
   },
   mounted() {
