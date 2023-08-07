@@ -83,7 +83,8 @@ export default {
         bio: '',
         email: '',
         mobile: '',
-        avatar: ''
+        avatar: '',
+        modifyTime: ''
       }
     }
   },
@@ -102,10 +103,18 @@ export default {
       console.log(tab, event)
     },
     submitForm(formName) {
+      const currentDate = new Date();
+      this.user.modifyTime = currentDate.toISOString();
+      console.log(this.user.modifyTime)
       console.log(this.user)
       update(this.user).then(res => {
-        this.$message.success('信息修改成功')
-        this.fetchInfo()
+        console.log(res.message)
+        if(res.message=='操作成功'){
+          this.$message.success('信息修改成功')
+          this.fetchInfo()
+        }else{
+          this.$message.warning('情報は変更されていません、変更して提出してください。')
+        }
       })
     },
     resetForm(formName) {
