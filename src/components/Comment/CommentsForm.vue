@@ -53,6 +53,7 @@ export default {
         console.log(this.commentText)
         postData['content'] = this.commentText
         postData['topic_id'] = this.slug
+        this.commentText = ''
         await pushComment(postData)
         this.$emit('loadComments', this.slug)
         this.$message.success('留言成功')
