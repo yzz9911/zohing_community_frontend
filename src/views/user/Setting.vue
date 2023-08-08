@@ -19,8 +19,8 @@
                   <el-input v-model="user.bio" />
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-                  <el-button @click="resetForm('ruleForm')">重置</el-button>
+                  <el-button type="primary" @click="submitForm('baseInfoForm')">提交</el-button>
+                  <el-button @click="resetFormForBase()">重置</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -30,7 +30,7 @@
               </figure>
             </el-tab-pane>
             <el-tab-pane label="电子邮箱" name="third">
-              <el-form ref="dynamicValidateForm" :model="user" label-width="100px" class="demo-dynamic">
+              <el-form ref="emailForm" :model="user" label-width="100px" class="demo-dynamic">
                 <el-form-item
                   prop="email"
                   label="邮箱"
@@ -43,20 +43,20 @@
                 </el-form-item>
 
                 <el-form-item>
-                  <el-button type="primary" @click="submitForm('dynamicValidateForm')">提交</el-button>
-                  <el-button @click="resetForm('dynamicValidateForm')">重置</el-button>
+                  <el-button type="primary" @click="submitForm('emailForm')">提交</el-button>
+                  <el-button @click="resetForm('emailForm')">重置</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
             <el-tab-pane label="手机号" name="fourth">
-              <el-form ref="dynamicValidateForm" :model="user" label-width="100px" class="demo-dynamic">
+              <el-form ref="phoneForm" :model="user" label-width="100px" class="demo-dynamic">
                 <el-form-item>
                   <el-input v-model="user.mobile" />
                 </el-form-item>
 
                 <el-form-item>
-                  <el-button type="primary" @click="submitForm('dynamicValidateForm')">提交</el-button>
-                  <el-button @click="resetForm('dynamicValidateForm')">重置</el-button>
+                  <el-button type="primary" @click="submitForm('phoneForm')">提交</el-button>
+                  <el-button @click="resetFormForPhone()">重置</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -85,7 +85,8 @@ export default {
         mobile: '',
         avatar: '',
         modifyTime: ''
-      }
+      },
+      settingMap:{}
     }
   },
   created() {
@@ -107,18 +108,30 @@ export default {
       this.user.modifyTime = currentDate.toISOString();
       console.log(this.user.modifyTime)
       console.log(this.user)
-      update(this.user).then(res => {
+
+      this.settingMap = {};
+      const key = formName;
+      const value = this.user;
+      this.settingMap[key] = value;
+      update(this.settingMap).then(res => {
         console.log(res.message)
         if(res.message=='操作成功'){
           this.$message.success('信息修改成功')
           this.fetchInfo()
         }else{
-          this.$message.warning('情報は変更されていません、変更して提出してください。')
+          this.$message.warning(res.message)
         }
       })
     },
+    resetFormForBase() {
+      this.user.alias=''
+      this.user.bio=''
+    },
     resetForm(formName) {
       this.$refs[formName].resetFields()
+    },
+    resetFormForPhone() {
+      this.user.mobile=''
     }
   }
 }

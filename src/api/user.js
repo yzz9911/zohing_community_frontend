@@ -19,11 +19,12 @@ export function getInfo() {
   })
 }
 // 更新
-export function update(user) {
+export function update(settingMap) {
+  // console.log(user)
   return request({
     url: '/ums/user/update',
     method: 'post',
-    data: user
+    data: settingMap
   })
 }
 
