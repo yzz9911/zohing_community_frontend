@@ -126,13 +126,17 @@ export default {
           }
           this.ruleForm.content = this.contentEditor.getValue()
           post(this.ruleForm).then((response) => {
-            const { data } = response
-            setTimeout(() => {
-              this.$router.push({
-                name: 'post-detail',
-                params: { id: data.id }
-              })
-            }, 800)
+            if(response.message=='话题已存在，请修改'){
+              this.$message.warning(response.message)
+            }else{
+              const { data } = response
+              setTimeout(() => {
+                this.$router.push({
+                  name: 'post-detail',
+                  params: { id: data.id }
+                })
+              }, 800)
+            }
           })
         } else {
           console.log('error submit!!')
